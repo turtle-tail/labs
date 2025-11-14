@@ -22,6 +22,7 @@ export const getPublishedTests = cache(async (): Promise<Test[]> => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
+    .schema('labs')
     .from('tests')
     .select('*')
     .eq('is_published', true)
@@ -40,10 +41,17 @@ export const getPublishedTests = cache(async (): Promise<Test[]> => {
  * Cached for SSG
  */
 export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestions | null> => {
+  // Input validation
+  if (!slug || typeof slug !== 'string' || slug.trim().length === 0) {
+    console.error('Invalid slug provided')
+    return null
+  }
+
   const supabase = await createClient()
 
   // Get test
   const { data: test, error: testError } = await supabase
+    .schema('labs')
     .from('tests')
     .select('*')
     .eq('slug', slug)
@@ -56,6 +64,7 @@ export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestio
 
   // Get questions with options
   const { data: questions, error: questionsError } = await supabase
+    .schema('labs')
     .from('questions')
     .select(`
       *,
@@ -63,14 +72,22 @@ export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestio
     `)
     .eq('test_id', test.id)
     .order('order_index', { ascending: true })
+    .returns<(Question & { options: QuestionOption[] })[]>()
 
   if (questionsError) {
     console.error('Error fetching questions:', questionsError)
     return null
   }
 
+  // Sort options by order_index (Supabase doesn't support ordering in nested queries)
+  const questionsWithSortedOptions = (questions || []).map(question => ({
+    ...question,
+    options: (question.options || []).sort((a, b) => a.order_index - b.order_index)
+  }))
+
   // Get results
   const { data: results, error: resultsError } = await supabase
+    .schema('labs')
     .from('results')
     .select('*')
     .eq('test_id', test.id)
@@ -82,7 +99,7 @@ export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestio
 
   return {
     ...test,
-    questions: questions || [],
+    questions: questionsWithSortedOptions,
     results: results || [],
   }
 })
@@ -95,6 +112,7 @@ export const getTestResult = cache(async (resultId: string) => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
+    .schema('labs')
     .from('test_results')
     .select(`
       *,
