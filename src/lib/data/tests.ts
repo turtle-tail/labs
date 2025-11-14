@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { Database } from '@/lib/supabase/types'
 import { cache } from 'react'
 
@@ -15,7 +16,28 @@ export interface TestWithQuestions extends Test {
 }
 
 /**
- * Get all published tests
+ * Get all published tests (for build-time)
+ * Use this in generateStaticParams
+ */
+export async function getPublishedTestsForBuild(): Promise<Test[]> {
+  const supabase = createAdminClient()
+
+  const { data, error } = await supabase
+    .from('tests')
+    .select('*')
+    .eq('is_published', true)
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('Error fetching tests:', error)
+    return []
+  }
+
+  return data || []
+}
+
+/**
+ * Get all published tests (for runtime)
  * Cached for SSG
  */
 export const getPublishedTests = cache(async (): Promise<Test[]> => {
