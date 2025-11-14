@@ -82,6 +82,9 @@ export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestio
     return null
   }
 
+  // Type assertion for TypeScript narrowing
+  const validTest = test as Test
+
   // Get questions with options
   const { data: questions, error: questionsError } = await supabase
     .from('questions')
@@ -89,7 +92,7 @@ export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestio
       *,
       options:question_options(*)
     `)
-    .eq('test_id', test.id)
+    .eq('test_id', validTest.id)
     .order('order_index', { ascending: true })
     .returns<(Question & { options: QuestionOption[] })[]>()
 
@@ -108,7 +111,7 @@ export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestio
   const { data: results, error: resultsError } = await supabase
     .from('results')
     .select('*')
-    .eq('test_id', test.id)
+    .eq('test_id', validTest.id)
 
   if (resultsError) {
     console.error('Error fetching results:', resultsError)
@@ -116,7 +119,7 @@ export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestio
   }
 
   return {
-    ...test,
+    ...validTest,
     questions: questionsWithSortedOptions,
     results: results || [],
   }
