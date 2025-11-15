@@ -70,20 +70,19 @@
 }
 
 @theme inline {
+  /* Custom colors */
   --color-primary: #00a67e;
   --color-primary-hover: #008f6d;
-
   --color-bg-main: #fafafa;
   --color-bg-card: #ffffff;
   --color-bg-secondary: #f5f5f5;
-
   --color-text-primary: #1a1a1a;
   --color-text-secondary: #666666;
   --color-text-tertiary: #999999;
-
   --color-border: #e0e0e0;
-  --color-border-active: var(--color-primary);
+  --color-border-active: #00a67e;
 
+  /* Spacing */
   --spacing-xs: 8px;
   --spacing-sm: 12px;
   --spacing-md: 16px;
@@ -92,10 +91,14 @@
   --spacing-2xl: 48px;
   --spacing-3xl: 64px;
 
+  /* Border Radius */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
+
+  /* Max Width */
+  --max-width-content: 640px;
 }
 
 * {
