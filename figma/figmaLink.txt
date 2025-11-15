@@ -1,0 +1,13 @@
+피그마 메이크 publish 사이트 
+	https://script-neon-67078207.figma.site
+
+- 랜딩화면
+	- https://www.figma.com/design/TQIsALhS8iNTeKrYS4RejR/2025-%EB%82%98%EC%9D%98-%ED%82%A4%EC%9B%8C%EB%93%9C?node-id=8-2&t=eekNz81OdfzqYHJs-11
+- 질문 페이지
+	- https://www.figma.com/design/TQIsALhS8iNTeKrYS4RejR/2025-%EB%82%98%EC%9D%98-%ED%82%A4%EC%9B%8C%EB%93%9C?node-id=8-18&t=eekNz81OdfzqYHJs-11
+- 버튼 스타일
+	- https://www.figma.com/design/TQIsALhS8iNTeKrYS4RejR/2025-%EB%82%98%EC%9D%98-%ED%82%A4%EC%9B%8C%EB%93%9C?node-id=8-78&t=eekNz81OdfzqYHJs-11
+- 결과 화면
+	- https://www.figma.com/design/TQIsALhS8iNTeKrYS4RejR/2025-%EB%82%98%EC%9D%98-%ED%82%A4%EC%9B%8C%EB%93%9C?node-id=6-117&t=eekNz81OdfzqYHJs-11
+- 링크 공유 토스트
+	- https://www.figma.com/design/TQIsALhS8iNTeKrYS4RejR/2025-%EB%82%98%EC%9D%98-%ED%82%A4%EC%9B%8C%EB%93%9C?node-id=11-582&t=eekNz81OdfzqYHJs-11

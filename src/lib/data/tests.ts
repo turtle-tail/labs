@@ -125,11 +125,21 @@ export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestio
   }
 })
 
+export interface TestResultWithRelations {
+  id: string
+  test_id: string
+  result_id: string
+  answers: Record<string, string>
+  created_at: string
+  test: Test
+  result: Result
+}
+
 /**
  * Get test result by ID
  * For result page (ISR)
  */
-export const getTestResult = cache(async (resultId: string) => {
+export const getTestResult = cache(async (resultId: string): Promise<TestResultWithRelations | null> => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
@@ -147,5 +157,5 @@ export const getTestResult = cache(async (resultId: string) => {
     return null
   }
 
-  return data
+  return data as unknown as TestResultWithRelations
 })

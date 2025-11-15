@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { TestIntro } from '@/components/test/TestIntro'
+import { QuestionFlow } from '@/components/test/QuestionFlow'
 import { TestWithQuestions } from '@/lib/data/tests'
 
 interface TestContainerProps {
@@ -23,11 +24,5 @@ export function TestContainer({ test }: TestContainerProps) {
     )
   }
 
-  return (
-    <div className="min-h-screen flex items-center justify-center px-5">
-      <div className="max-w-content w-full text-center">
-        <p>Question flow will be implemented next</p>
-      </div>
-    </div>
-  )
+  return <QuestionFlow test={test} />
 }

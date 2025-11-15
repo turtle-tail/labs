@@ -1,0 +1,73 @@
+'use server'
+
+import { redirect } from 'next/navigation'
+import { createClient } from '@/lib/supabase/server'
+import { calculateResult, validateAnswers } from '@/lib/utils/calculate-result'
+
+export async function submitTest(
+  testId: string,
+  answers: Record<string, string>
+) {
+  const supabase = await createClient()
+
+  // 1. Get all questions for validation
+  const { data: questions, error: questionsError } = await supabase
+    .from('questions')
+    .select('id')
+    .eq('test_id', testId)
+    .order('order_index')
+    .returns<{id: string}[]>()
+
+  if (questionsError || !questions) {
+    throw new Error('Failed to load questions')
+  }
+
+  // 2. Validate all questions are answered
+  const questionIds = questions.map((q) => q.id)
+  if (!validateAnswers(questionIds, answers)) {
+    throw new Error('Not all questions have been answered')
+  }
+
+  // 3. Get selected options with their points
+  const optionIds = Object.values(answers)
+  const { data: options, error: optionsError } = await supabase
+    .from('question_options')
+    .select('*')
+    .in('id', optionIds)
+
+  if (optionsError || !options) {
+    throw new Error('Failed to load options')
+  }
+
+  // 4. Get all possible results
+  const { data: results, error: resultsError } = await supabase
+    .from('results')
+    .select('*')
+    .eq('test_id', testId)
+
+  if (resultsError || !results || results.length === 0) {
+    throw new Error('No results found for this test')
+  }
+
+  // 5. Calculate winning result
+  const winningResultId = calculateResult(options, results)
+
+  // 6. Save to test_results table
+  const { data: testResult, error } = await supabase
+    .from('test_results')
+    .insert({
+      test_id: testId,
+      result_id: winningResultId,
+      answers: answers as any,
+    } as any)
+    .select('id')
+    .single()
+
+  if (error || !testResult) {
+    console.error('Failed to save test result:', error)
+    throw new Error('Failed to save test result')
+  }
+
+  // 7. Redirect to result page
+  redirect(`/results/${(testResult as any).id}`)
+}
