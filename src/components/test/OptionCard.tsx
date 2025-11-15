@@ -19,30 +19,32 @@ export function OptionCard({
     <button
       onClick={onClick}
       className={cn(
-        'w-full flex items-center gap-4 p-4 rounded-xl border transition-all',
-        'hover:border-primary hover:shadow-sm',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
-        'active:scale-[0.98]', // Mobile touch feedback
-        'min-h-[60px]', // Minimum 60px for better touch target
+        'w-full flex items-center gap-4 p-[26px] rounded-2xl border-[1.689px] transition-all bg-white',
+        'hover:border-[#a4f4cf] hover:shadow-sm',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#009966] focus-visible:ring-offset-2',
+        'active:scale-[0.98]',
         isSelected
-          ? 'border-primary bg-primary/5'
-          : 'border-border bg-white'
+          ? 'border-[#009966] shadow-md'
+          : 'border-[#e7e5e4]'
       )}
     >
       {/* Label Circle */}
       <div
         className={cn(
-          'flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium flex-shrink-0',
+          'flex items-center justify-center w-10 h-10 rounded-full text-base leading-6 font-normal flex-shrink-0 tracking-[-0.3125px]',
           isSelected
-            ? 'bg-primary text-white'
-            : 'bg-secondary text-secondary-foreground'
+            ? 'bg-[#009966] text-white'
+            : 'bg-[#f5f4f3] text-[#79716b]'
         )}
+        style={{ fontFamily: 'Inter, sans-serif' }}
       >
         {label}
       </div>
 
       {/* Option Text */}
-      <div className="text-left text-base">{text}</div>
+      <div className="text-left text-base leading-6 font-medium text-[#44403b] tracking-[-0.3125px]">
+        {text}
+      </div>
     </button>
   )
 }

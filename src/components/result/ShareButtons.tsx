@@ -46,14 +46,13 @@ export function ShareButtons({ title, description, url, testSlug }: ShareButtons
   }
 
   return (
-    <div className="flex gap-3">
-      <Button
-        variant="outline"
-        className="flex-1"
+    <div className="flex gap-3 w-full">
+      <button
         onClick={handleShare}
+        className="flex-1 h-8 bg-white border-2 border-stone-300 rounded-full flex items-center justify-center gap-2 transition-opacity hover:opacity-80"
       >
         <svg
-          className="w-4 h-4 mr-2"
+          className="w-4 h-4"
           fill="none"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -63,28 +62,30 @@ export function ShareButtons({ title, description, url, testSlug }: ShareButtons
         >
           <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
         </svg>
-        링크 공유
-      </Button>
+        <span className="text-sm leading-5 font-medium text-[#44403b] tracking-[-0.1504px]">
+          링크 공유
+        </span>
+      </button>
 
-      <Button
-        className="flex-1"
-        asChild
+      <a
+        href={`/tests/${testSlug}`}
+        className="flex-1 h-8 bg-[#009966] rounded-full flex items-center justify-center gap-2 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.1),0px_1px_2px_-1px_rgba(0,0,0,0.1)] transition-opacity hover:opacity-90"
       >
-        <a href={`/tests/${testSlug}`}>
-          <svg
-            className="w-4 h-4 mr-2"
-            fill="none"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
+        <svg
+          className="w-4 h-4 text-white"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="2"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        <span className="text-sm leading-5 font-medium text-white tracking-[-0.1504px]">
           다시 해보기
-        </a>
-      </Button>
+        </span>
+      </a>
     </div>
   )
 }

@@ -81,35 +81,40 @@ export function QuestionFlow({ test }: QuestionFlowProps) {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-5 py-12">
-      <div className="max-w-content w-full">
+    <div className="min-h-screen bg-[#fafafa] flex items-center justify-center px-6 py-12">
+      <div className="max-w-[375px] w-full flex flex-col gap-12">
         {/* Progress Indicator */}
-        <div className="mb-8">
-          <p className="text-sm text-text-tertiary mb-2 text-center">
+        <div className="flex flex-col gap-2 items-center w-full">
+          <p className="text-sm leading-5 text-[#79716b] text-center tracking-[-0.1504px]">
             Step {currentIndex + 1} of {totalQuestions}
           </p>
-          <Progress
-            value={progress}
-            className="h-1 transition-all duration-300 ease-out"
-          />
+          <div className="w-full h-[6px] bg-[#e7e5e4] rounded-full overflow-hidden">
+            <div
+              className="h-full bg-[#009966] rounded-full transition-all duration-300"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
         </div>
 
-        {/* Question */}
-        <h2 className="text-2xl font-bold text-center mb-12">
-          {currentQuestion.text}
-        </h2>
+        {/* Question & Options */}
+        <div className="flex flex-col gap-12 items-center w-full">
+          {/* Question */}
+          <h2 className="text-2xl leading-[39px] font-semibold text-center text-[#1c1917] tracking-[-0.24px] max-w-[335px] whitespace-pre-wrap">
+            {currentQuestion.text}
+          </h2>
 
-        {/* Options */}
-        <div className="space-y-3">
-          {currentQuestion.options.map((option, index) => (
-            <OptionCard
-              key={option.id}
-              label={LABELS[index]}
-              text={option.text}
-              isSelected={answers[currentQuestion.id] === option.id}
-              onClick={() => handleSelectOption(option.id)}
-            />
-          ))}
+          {/* Options */}
+          <div className="flex flex-col gap-4 w-full">
+            {currentQuestion.options.map((option, index) => (
+              <OptionCard
+                key={option.id}
+                label={LABELS[index]}
+                text={option.text}
+                isSelected={answers[currentQuestion.id] === option.id}
+                onClick={() => handleSelectOption(option.id)}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import { getTestResult, type TestResultWithRelations } from '@/lib/data/tests';
-import { Card } from '@/components/ui/card';
 import { ShareButtons } from '@/components/result/ShareButtons';
 
 interface PageProps {
@@ -54,42 +53,42 @@ export default async function ResultPage({ params }: PageProps) {
   const test = data.test;
 
   return (
-    <main className="min-h-screen flex items-center justify-center px-5 py-12">
-      <div className="max-w-content w-full">
-        {/* Decorative sparkles */}
-        <div className="text-center mb-6">
-          <div className="inline-flex gap-4 text-2xl opacity-50">
-            <span>✨</span>
-            <span>✨</span>
-            <span>✨</span>
-          </div>
+    <main className="min-h-screen bg-[#fafafa] flex items-center justify-center px-6 py-12">
+      <div className="max-w-[512px] w-full flex flex-col gap-8">
+        {/* Hero Image */}
+        <div className="w-full h-[258px] bg-white border border-stone-200 rounded-[24px] overflow-hidden">
+          {result.image_url && (
+            <img src={result.image_url} alt={result.title} className="w-full h-full object-cover" />
+          )}
         </div>
-
-        {/* Result Image (placeholder for now) */}
-        {result.image_url && (
-          <div className="mb-6 rounded-2xl overflow-hidden">
-            <img src={result.image_url} alt={result.title} className="w-full h-auto" />
-          </div>
-        )}
 
         {/* Keywords */}
         {result.keywords && Array.isArray(result.keywords) && result.keywords.length > 0 && (
-          <div className="flex justify-center gap-2 mb-6 flex-wrap">
-            {result.keywords.map((keyword, index) => (
-              <span key={index} className="px-4 py-1.5 rounded-full border border-primary text-primary text-sm">
-                #{keyword}
-              </span>
+          <div className="flex justify-center gap-3">
+            {result.keywords.slice(0, 3).map((keyword, index) => (
+              <div
+                key={index}
+                className="h-[46px] px-[21px] pt-[14px] pb-px bg-white border border-[#a4f4cf] rounded-full flex items-center justify-center"
+              >
+                <span className="text-base leading-6 text-[#007a55] tracking-[-0.3125px]">
+                  #{keyword}
+                </span>
+              </div>
             ))}
           </div>
         )}
 
         {/* Result Title */}
-        <h1 className="text-3xl font-bold text-center mb-6">{result.title}</h1>
+        <h1 className="text-2xl leading-[39px] text-center text-stone-800 tracking-[0.0703px]">
+          {result.title}
+        </h1>
 
         {/* Result Description */}
-        <Card className="p-6 mb-8">
-          <p className="text-text-secondary leading-relaxed whitespace-pre-line">{result.description}</p>
-        </Card>
+        <div className="bg-white border border-stone-200 rounded-[24px] p-8">
+          <p className="text-base leading-[26px] text-[#44403b] text-center tracking-[-0.3125px] whitespace-pre-wrap">
+            {result.description}
+          </p>
+        </div>
 
         {/* Action Buttons */}
         <ShareButtons
@@ -99,8 +98,10 @@ export default async function ResultPage({ params }: PageProps) {
           testSlug={test.slug}
         />
 
-        {/* Footer */}
-        <p className="text-center text-sm text-text-tertiary mt-8">{test.share_text || '2025 나의 키워드 찾기'} ✨</p>
+        {/* Footer Text */}
+        <p className="text-xs leading-4 text-[#79716b] text-center">
+          2025 나의 키워드 찾기 ✨
+        </p>
       </div>
     </main>
   );
