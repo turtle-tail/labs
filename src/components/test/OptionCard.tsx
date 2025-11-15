@@ -22,6 +22,8 @@ export function OptionCard({
         'w-full flex items-center gap-4 p-4 rounded-xl border transition-all',
         'hover:border-primary hover:shadow-sm',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2',
+        'active:scale-[0.98]', // Mobile touch feedback
+        'min-h-[60px]', // Minimum 60px for better touch target
         isSelected
           ? 'border-primary bg-primary/5'
           : 'border-border bg-white'

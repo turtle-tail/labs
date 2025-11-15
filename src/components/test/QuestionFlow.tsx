@@ -88,7 +88,10 @@ export function QuestionFlow({ test }: QuestionFlowProps) {
           <p className="text-sm text-text-tertiary mb-2 text-center">
             Step {currentIndex + 1} of {totalQuestions}
           </p>
-          <Progress value={progress} className="h-1" />
+          <Progress
+            value={progress}
+            className="h-1 transition-all duration-300 ease-out"
+          />
         </div>
 
         {/* Question */}

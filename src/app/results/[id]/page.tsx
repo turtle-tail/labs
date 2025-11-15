@@ -1,8 +1,7 @@
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
 import { getTestResult, type TestResultWithRelations } from '@/lib/data/tests'
-import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { ShareButtons } from '@/components/result/ShareButtons'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -104,46 +103,12 @@ export default async function ResultPage({ params }: PageProps) {
         </Card>
 
         {/* Action Buttons */}
-        <div className="flex gap-3">
-          <Button
-            variant="outline"
-            className="flex-1"
-            onClick={() => {
-              navigator.clipboard.writeText(window.location.href)
-              alert('링크가 복사되었습니다!')
-            }}
-          >
-            <svg
-              className="w-4 h-4 mr-2"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-            </svg>
-            링크 공유
-          </Button>
-
-          <Link href={`/tests/${test.slug}`} className="flex-1">
-            <Button className="w-full">
-              <svg
-                className="w-4 h-4 mr-2"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              다시 해보기
-            </Button>
-          </Link>
-        </div>
+        <ShareButtons
+          title={result.title}
+          description={result.share_description}
+          url={`${process.env.NEXT_PUBLIC_SITE_URL || ''}/results/${id}`}
+          testSlug={test.slug}
+        />
 
         {/* Footer */}
         <p className="text-center text-sm text-text-tertiary mt-8">
