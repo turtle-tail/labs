@@ -3,10 +3,10 @@ import { createAdminClient } from '@/lib/supabase/admin'
 import { Database } from '@/lib/supabase/types'
 import { cache } from 'react'
 
-type Test = Database['public']['Tables']['tests']['Row']
-type Question = Database['public']['Tables']['questions']['Row']
-type QuestionOption = Database['public']['Tables']['question_options']['Row']
-type Result = Database['public']['Tables']['results']['Row']
+type Test = Database['labs']['Tables']['tests']['Row']
+type Question = Database['labs']['Tables']['questions']['Row']
+type QuestionOption = Database['labs']['Tables']['question_options']['Row']
+type Result = Database['labs']['Tables']['results']['Row']
 
 export interface TestWithQuestions extends Test {
   questions: (Question & {

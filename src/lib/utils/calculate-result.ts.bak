@@ -1,7 +1,7 @@
 import { Database } from '@/lib/supabase/types'
 
-type QuestionOption = Database['labs']['Tables']['question_options']['Row']
-type Result = Database['labs']['Tables']['results']['Row']
+type QuestionOption = Database['public']['Tables']['question_options']['Row']
+type Result = Database['public']['Tables']['results']['Row']
 
 interface ScoreMap {
   [resultId: string]: number
