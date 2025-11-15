@@ -1,28 +1,28 @@
-import { notFound } from 'next/navigation'
-import { getTestResult, type TestResultWithRelations } from '@/lib/data/tests'
-import { Card } from '@/components/ui/card'
-import { ShareButtons } from '@/components/result/ShareButtons'
+import { notFound } from 'next/navigation';
+import { getTestResult, type TestResultWithRelations } from '@/lib/data/tests';
+import { Card } from '@/components/ui/card';
+import { ShareButtons } from '@/components/result/ShareButtons';
 
 interface PageProps {
-  params: Promise<{ id: string }>
+  params: Promise<{ id: string }>;
 }
 
 // ISR: Generate on-demand, cache forever
-export const revalidate = false
+export const revalidate = false;
 
 // Generate metadata for SEO and social sharing
 export async function generateMetadata({ params }: PageProps) {
-  const { id } = await params
-  const data = await getTestResult(id)
+  const { id } = await params;
+  const data = await getTestResult(id);
 
   if (!data) {
     return {
       title: 'Result Not Found',
-    }
+    };
   }
 
-  const result = data.result
-  const test = data.test
+  const result = data.result;
+  const test = data.test;
 
   return {
     title: `나는 '${result.title}'!`,
@@ -39,19 +39,19 @@ export async function generateMetadata({ params }: PageProps) {
       description: result.share_description,
       images: result.image_url ? [result.image_url] : [],
     },
-  }
+  };
 }
 
 export default async function ResultPage({ params }: PageProps) {
-  const { id } = await params
-  const data = await getTestResult(id)
+  const { id } = await params;
+  const data = await getTestResult(id);
 
   if (!data) {
-    notFound()
+    notFound();
   }
 
-  const result = data.result
-  const test = data.test
+  const result = data.result;
+  const test = data.test;
 
   return (
     <main className="min-h-screen flex items-center justify-center px-5 py-12">
@@ -68,11 +68,7 @@ export default async function ResultPage({ params }: PageProps) {
         {/* Result Image (placeholder for now) */}
         {result.image_url && (
           <div className="mb-6 rounded-2xl overflow-hidden">
-            <img
-              src={result.image_url}
-              alt={result.title}
-              className="w-full h-auto"
-            />
+            <img src={result.image_url} alt={result.title} className="w-full h-auto" />
           </div>
         )}
 
@@ -80,10 +76,7 @@ export default async function ResultPage({ params }: PageProps) {
         {result.keywords && Array.isArray(result.keywords) && result.keywords.length > 0 && (
           <div className="flex justify-center gap-2 mb-6 flex-wrap">
             {result.keywords.map((keyword, index) => (
-              <span
-                key={index}
-                className="px-4 py-1.5 rounded-full border border-primary text-primary text-sm"
-              >
+              <span key={index} className="px-4 py-1.5 rounded-full border border-primary text-primary text-sm">
                 #{keyword}
               </span>
             ))}
@@ -91,15 +84,11 @@ export default async function ResultPage({ params }: PageProps) {
         )}
 
         {/* Result Title */}
-        <h1 className="text-3xl font-bold text-center mb-6">
-          {result.title}
-        </h1>
+        <h1 className="text-3xl font-bold text-center mb-6">{result.title}</h1>
 
         {/* Result Description */}
         <Card className="p-6 mb-8">
-          <p className="text-text-secondary leading-relaxed whitespace-pre-line">
-            {result.description}
-          </p>
+          <p className="text-text-secondary leading-relaxed whitespace-pre-line">{result.description}</p>
         </Card>
 
         {/* Action Buttons */}
@@ -111,10 +100,8 @@ export default async function ResultPage({ params }: PageProps) {
         />
 
         {/* Footer */}
-        <p className="text-center text-sm text-text-tertiary mt-8">
-          {test.share_text || '2025 나의 키워드 찾기'} ✨
-        </p>
+        <p className="text-center text-sm text-text-tertiary mt-8">{test.share_text || '2025 나의 키워드 찾기'} ✨</p>
       </div>
     </main>
-  )
+  );
 }
