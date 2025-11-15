@@ -12,6 +12,7 @@ export async function submitTest(
 
   // 1. Get all questions for validation
   const { data: questions, error: questionsError } = await supabase
+    .schema('labs' as any)
     .from('questions')
     .select('id')
     .eq('test_id', testId)
@@ -31,6 +32,7 @@ export async function submitTest(
   // 3. Get selected options with their points
   const optionIds = Object.values(answers)
   const { data: options, error: optionsError } = await supabase
+    .schema('labs' as any)
     .from('question_options')
     .select('*')
     .in('id', optionIds)
@@ -41,6 +43,7 @@ export async function submitTest(
 
   // 4. Get all possible results
   const { data: results, error: resultsError } = await supabase
+    .schema('labs' as any)
     .from('results')
     .select('*')
     .eq('test_id', testId)
@@ -54,6 +57,7 @@ export async function submitTest(
 
   // 6. Save to test_results table
   const { data: testResult, error } = await supabase
+    .schema('labs' as any)
     .from('test_results')
     .insert({
       test_id: testId,
