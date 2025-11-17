@@ -1,48 +1,49 @@
-'use client'
+'use client';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 interface OptionCardProps {
-  label: string // A, B, C, D
-  text: string
-  isSelected?: boolean
-  onClick: () => void
+  label: string; // A, B, C, D
+  text: string;
+  isSelected?: boolean;
+  onClick: () => void;
+  disabled?: boolean;
 }
 
-export function OptionCard({
-  label,
-  text,
-  isSelected = false,
-  onClick,
-}: OptionCardProps) {
+export function OptionCard({ label, text, isSelected = false, onClick, disabled = false }: OptionCardProps) {
   return (
     <button
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
+      disabled={disabled}
       className={cn(
         // Base styles - Figma Design System
-        'w-full flex items-center gap-4 p-6 rounded-2xl border-2 transition-all duration-200 bg-white',
-        'font-inter cursor-pointer',
+        'w-full flex items-center gap-4 p-6 rounded-2xl border-2 bg-white',
+        'font-inter',
+        // Figma-style transition
+        'transition-all duration-300 ease-in-out',
         // Default state
         'border-stone-200',
         // Hover state
-        'hover:border-emerald-200 hover:shadow-sm',
+        !disabled &&
+          'hover:border-emerald-200 hover:shadow-[0_1px_3px_0_rgba(0,0,0,0.1),0_1px_2px_-1px_rgba(0,0,0,0.1)] hover:-translate-y-0.5 cursor-pointer',
         // Focus state
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2',
-        // Active state
-        'active:scale-[0.98]',
+        !disabled &&
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2',
+        // Active state (click)
+        !disabled && 'active:scale-[0.98] active:translate-y-0',
         // Selected state
-        isSelected && 'border-emerald-600 shadow-md'
+        isSelected && 'border-emerald-600 shadow-md',
+        // Disabled state
+        disabled && 'opacity-50 cursor-not-allowed'
       )}
     >
       {/* Label Circle */}
       <div
         className={cn(
           'flex items-center justify-center w-10 h-10 rounded-full',
-          'text-base leading-6 font-normal flex-shrink-0 tracking-tight',
+          'text-base leading-6 font-normal shrink-0 tracking-tight',
           'transition-colors duration-200',
-          isSelected
-            ? 'bg-emerald-600 text-white'
-            : 'bg-stone-100 text-stone-500'
+          isSelected ? 'bg-emerald-600 text-white' : 'bg-stone-100 text-stone-500'
         )}
       >
         {label}
@@ -59,5 +60,5 @@ export function OptionCard({
         {text}
       </div>
     </button>
-  )
+  );
 }

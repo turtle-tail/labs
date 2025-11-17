@@ -16,12 +16,20 @@ export function QuestionFlow({ test }: QuestionFlowProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<number, number>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const currentQuestion = test.questions[currentIndex];
   const totalQuestions = test.questions.length;
   const progress = ((currentIndex + 1) / totalQuestions) * 100;
 
   const handleSelectOption = async (optionIndex: number) => {
+    // Prevent duplicate clicks
+    if (isProcessing || isSubmitting) {
+      return;
+    }
+
+    setIsProcessing(true);
+
     // Save answer with 1-based indices
     const questionNumber = currentIndex + 1;
     const optionNumber = optionIndex + 1;
@@ -41,13 +49,13 @@ export function QuestionFlow({ test }: QuestionFlowProps) {
         }
         console.error('Failed to submit test:', error);
         setIsSubmitting(false);
+        setIsProcessing(false);
         alert('결과 저장에 실패했습니다. 다시 시도해주세요.');
       }
     } else {
-      // Move to next question
-      setTimeout(() => {
-        setCurrentIndex((prev) => prev + 1);
-      }, 300);
+      // Move to next question immediately
+      setCurrentIndex((prev) => prev + 1);
+      setIsProcessing(false);
     }
   };
 
@@ -72,14 +80,14 @@ export function QuestionFlow({ test }: QuestionFlowProps) {
           </p>
           <div className="w-full h-1.5 bg-stone-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-emerald-600 rounded-full transition-all duration-300"
+              className="h-full bg-emerald-600 rounded-full transition-all duration-[400ms] ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>
         </div>
 
         {/* Question & Options */}
-        <div className="flex flex-col gap-12 items-center w-full">
+        <div key={currentIndex} className="flex flex-col gap-12 items-center w-full animate-fade-slide-in">
           {/* Question */}
           <h2 className="text-2xl leading-10 font-semibold text-center text-stone-900 tracking-tight whitespace-pre-wrap">
             {currentQuestion.text}
@@ -94,6 +102,7 @@ export function QuestionFlow({ test }: QuestionFlowProps) {
                 text={option.text}
                 isSelected={false}
                 onClick={() => handleSelectOption(index)}
+                disabled={isProcessing || isSubmitting}
               />
             ))}
           </div>

@@ -1,18 +1,18 @@
-import { createClient } from '@/lib/supabase/server'
-import { createAdminClient } from '@/lib/supabase/admin'
-import { Database } from '@/lib/supabase/types'
-import { cache } from 'react'
+import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
+import { Database } from '@/lib/supabase/types';
+import { cache } from 'react';
 
-type Test = Database['labs']['Tables']['tests']['Row']
-type Question = Database['labs']['Tables']['questions']['Row']
-type QuestionOption = Database['labs']['Tables']['question_options']['Row']
-type Result = Database['labs']['Tables']['results']['Row']
+type Test = Database['labs']['Tables']['tests']['Row'];
+type Question = Database['labs']['Tables']['questions']['Row'];
+type QuestionOption = Database['labs']['Tables']['question_options']['Row'];
+type Result = Database['labs']['Tables']['results']['Row'];
 
 export interface TestWithQuestions extends Test {
   questions: (Question & {
-    options: QuestionOption[]
-  })[]
-  results: Result[]
+    options: QuestionOption[];
+  })[];
+  results: Result[];
 }
 
 /**
@@ -20,21 +20,21 @@ export interface TestWithQuestions extends Test {
  * Use this in generateStaticParams
  */
 export async function getPublishedTestsForBuild(): Promise<Test[]> {
-  const supabase = createAdminClient()
+  const supabase = createAdminClient();
 
   const { data, error } = await supabase
     .schema('labs')
     .from('tests')
     .select('*')
     .eq('is_published', true)
-    .order('created_at', { ascending: false })
+    .order('created_at', { ascending: false });
 
   if (error) {
-    console.error('Error fetching tests:', error)
-    return []
+    console.error('Error fetching tests:', error);
+    return [];
   }
 
-  return data || []
+  return data || [];
 }
 
 /**
@@ -42,22 +42,22 @@ export async function getPublishedTestsForBuild(): Promise<Test[]> {
  * Cached for SSG
  */
 export const getPublishedTests = cache(async (): Promise<Test[]> => {
-  const supabase = await createClient()
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .schema('labs')
     .from('tests')
     .select('*')
     .eq('is_published', true)
-    .order('created_at', { ascending: false })
+    .order('created_at', { ascending: false });
 
   if (error) {
-    console.error('Error fetching tests:', error)
-    return []
+    console.error('Error fetching tests:', error);
+    return [];
   }
 
-  return data || []
-})
+  return data || [];
+});
 
 /**
  * Get test by slug with all questions, options, and results
@@ -66,11 +66,11 @@ export const getPublishedTests = cache(async (): Promise<Test[]> => {
 export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestions | null> => {
   // Input validation
   if (!slug || typeof slug !== 'string' || slug.trim().length === 0) {
-    console.error('Invalid slug provided')
-    return null
+    console.error('Invalid slug provided');
+    return null;
   }
 
-  const supabase = await createClient()
+  const supabase = await createClient();
 
   // Get test
   const { data: test, error: testError } = await supabase
@@ -79,65 +79,86 @@ export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestio
     .select('*')
     .eq('slug', slug)
     .eq('is_published', true)
-    .single()
+    .single();
 
   if (testError || !test) {
-    return null
+    return null;
   }
-
-  // Type assertion for TypeScript narrowing
-  const validTest = test as Test
 
   // Get questions with options
   const { data: questions, error: questionsError } = await supabase
     .schema('labs')
     .from('questions')
-    .select(`
+    .select(
+      `
       *,
       options:question_options(*)
-    `)
-    .eq('test_id', validTest.id)
+    `
+    )
+    .eq('test_id', test.id)
     .order('order_index', { ascending: true })
-    .returns<(Question & { options: QuestionOption[] })[]>()
+    .returns<(Question & { options: QuestionOption[] })[]>();
 
   if (questionsError) {
-    console.error('Error fetching questions:', questionsError)
-    return null
+    console.error('Error fetching questions:', questionsError);
+    return null;
   }
 
   // Sort options by order_index (Supabase doesn't support ordering in nested queries)
-  const questionsWithSortedOptions = (questions || []).map(question => ({
+  const questionsWithSortedOptions = (questions || []).map((question) => ({
     ...question,
-    options: (question.options || []).sort((a, b) => a.order_index - b.order_index)
-  }))
+    options: (question.options || []).sort((a, b) => a.order_index - b.order_index),
+  }));
 
   // Get results
   const { data: results, error: resultsError } = await supabase
     .schema('labs')
     .from('results')
     .select('*')
-    .eq('test_id', validTest.id)
+    .eq('test_id', test.id);
 
   if (resultsError) {
-    console.error('Error fetching results:', resultsError)
-    return null
+    console.error('Error fetching results:', resultsError);
+    return null;
   }
 
   return {
-    ...validTest,
+    ...test,
     questions: questionsWithSortedOptions,
     results: results || [],
-  }
-})
+  };
+});
 
 export interface TestResultWithRelations {
-  id: string
-  test_id: string
-  result_id: string
-  answers: Record<string, string>
-  created_at: string
-  test: Test
-  result: Result
+  id: string;
+  test_id: string;
+  result_id: string;
+  answers: Record<string, string>;
+  created_at: string;
+  test: Test;
+  result: Result;
+}
+
+/**
+ * Type guard to validate test result data structure
+ */
+function isTestResultWithRelations(data: unknown): data is TestResultWithRelations {
+  if (!data || typeof data !== 'object') {
+    return false;
+  }
+
+  const result = data as any;
+
+  return (
+    typeof result.id === 'string' &&
+    typeof result.test_id === 'string' &&
+    typeof result.result_id === 'string' &&
+    typeof result.created_at === 'string' &&
+    result.test !== null &&
+    typeof result.test === 'object' &&
+    result.result !== null &&
+    typeof result.result === 'object'
+  );
 }
 
 /**
@@ -145,23 +166,41 @@ export interface TestResultWithRelations {
  * For result page (ISR)
  */
 export const getTestResult = cache(async (resultId: string): Promise<TestResultWithRelations | null> => {
-  const supabase = await createClient()
+  const supabase = await createClient();
 
   const { data, error } = await supabase
     .schema('labs')
     .from('test_results')
-    .select(`
+    .select(
+      `
       *,
       test:tests(*),
       result:results(*)
-    `)
+    `
+    )
     .eq('id', resultId)
-    .single()
+    .single();
 
   if (error) {
-    console.error('Error fetching result:', error)
-    return null
+    // PGRST116 = Row not found (expected when accessing old/deleted results)
+    if (error.code === 'PGRST116') {
+      console.log('Result not found:', resultId);
+    } else {
+      console.error('Error fetching result:', {
+        resultId,
+        errorCode: error.code,
+        errorMessage: error.message,
+        errorDetails: error.details,
+        errorHint: error.hint,
+      });
+    }
+    return null;
   }
 
-  return data as unknown as TestResultWithRelations
-})
+  if (!isTestResultWithRelations(data)) {
+    console.error('Invalid test result data structure:', data);
+    return null;
+  }
+
+  return data;
+});
