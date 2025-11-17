@@ -23,7 +23,7 @@ export async function getPublishedTestsForBuild(): Promise<Test[]> {
   const supabase = createAdminClient()
 
   const { data, error } = await supabase
-    .schema('labs' as any)
+    .schema('labs')
     .from('tests')
     .select('*')
     .eq('is_published', true)
@@ -45,7 +45,7 @@ export const getPublishedTests = cache(async (): Promise<Test[]> => {
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .schema('labs' as any)
+    .schema('labs')
     .from('tests')
     .select('*')
     .eq('is_published', true)
@@ -74,7 +74,7 @@ export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestio
 
   // Get test
   const { data: test, error: testError } = await supabase
-    .schema('labs' as any)
+    .schema('labs')
     .from('tests')
     .select('*')
     .eq('slug', slug)
@@ -90,7 +90,7 @@ export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestio
 
   // Get questions with options
   const { data: questions, error: questionsError } = await supabase
-    .schema('labs' as any)
+    .schema('labs')
     .from('questions')
     .select(`
       *,
@@ -113,7 +113,7 @@ export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestio
 
   // Get results
   const { data: results, error: resultsError } = await supabase
-    .schema('labs' as any)
+    .schema('labs')
     .from('results')
     .select('*')
     .eq('test_id', validTest.id)
@@ -148,7 +148,7 @@ export const getTestResult = cache(async (resultId: string): Promise<TestResultW
   const supabase = await createClient()
 
   const { data, error } = await supabase
-    .schema('labs' as any)
+    .schema('labs')
     .from('test_results')
     .select(`
       *,

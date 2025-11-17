@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { pretendard } from './fonts';
+import { pretendard, inter } from './fonts';
 import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={pretendard.variable}>
+    <html lang="ko" className={`${pretendard.variable} ${inter.variable}`}>
       <body>
         {children}
         <Toaster />

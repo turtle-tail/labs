@@ -75,6 +75,8 @@ export interface Database {
           description: string | null
           image_url: string | null
           share_description: string
+          this_year_description: string | null
+          next_year_advice: string | null
           created_at: string
         }
         Insert: Omit<Database['labs']['Tables']['results']['Row'], 'id' | 'created_at'>

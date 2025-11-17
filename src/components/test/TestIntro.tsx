@@ -1,32 +1,24 @@
-'use client'
+'use client';
 
 interface TestIntroProps {
-  title: string
-  description: string | null
-  questionCount: number
-  estimatedTime: number
-  onStart: () => void
+  title: string;
+  description: string | null;
+  questionCount: number;
+  estimatedTime: number;
+  onStart: () => void;
 }
 
-export function TestIntro({
-  title,
-  description,
-  questionCount,
-  estimatedTime,
-  onStart,
-}: TestIntroProps) {
+export function TestIntro({ title, description, questionCount, estimatedTime, onStart }: TestIntroProps) {
   return (
-    <div className="min-h-screen bg-[#fafafa] flex items-center justify-center px-6">
-      <div className="max-w-[512px] w-full flex flex-col items-center gap-8 text-center">
+    <div className="min-h-screen bg-stone-50 flex items-center justify-center px-6">
+      <div className="w-full flex flex-col items-center gap-8 text-center">
         {/* Icon */}
-        <div className="w-20 h-20 bg-[#d0fae5] rounded-[24px] flex items-center justify-center">
-          <span className="text-[36px] leading-[40px]">✨</span>
+        <div className="w-20 h-20 bg-emerald-100 rounded-3xl flex items-center justify-center">
+          <span className="text-4xl leading-10">✨</span>
         </div>
 
         {/* Title */}
-        <h1 className="text-[30px] leading-[36px] font-normal text-[#1c1917] tracking-[0.3955px]">
-          {title}
-        </h1>
+        <h1 className="text-3xl leading-9 font-normal text-stone-900 tracking-normal">{title}</h1>
 
         {/* Description */}
         {description && (
@@ -34,9 +26,10 @@ export function TestIntro({
             {description.split('\n').map((line, i) => (
               <p
                 key={i}
-                className={i === 0
-                  ? "text-base leading-6 text-[#57534d] tracking-[-0.3125px]"
-                  : "text-sm leading-5 text-[#79716b] tracking-[-0.1504px]"
+                className={
+                  i === 0
+                    ? 'text-base leading-6 text-stone-600 tracking-tight'
+                    : 'text-sm leading-5 text-stone-500 tracking-tight'
                 }
               >
                 {line}
@@ -45,21 +38,19 @@ export function TestIntro({
           </div>
         )}
 
-        {/* CTA Button */}
+        {/* CTA Button - Figma Design System */}
         <button
           onClick={onStart}
-          className="bg-[#009966] h-12 px-12 rounded-[48px] shadow-[0px_1px_3px_0px_rgba(0,0,0,0.1),0px_1px_2px_-1px_rgba(0,0,0,0.1)] hover:opacity-90 transition-opacity"
+          className="bg-emerald-600 px-10 py-4 rounded-full shadow-sm hover:bg-emerald-700 transition-colors duration-200 cursor-pointer"
         >
-          <span className="text-sm leading-5 font-medium text-white tracking-[-0.1504px]">
-            시작하기
-          </span>
+          <span className="text-base leading-5 font-medium text-white tracking-tight">시작하기</span>
         </button>
 
         {/* Meta info */}
-        <p className="text-sm text-[#79716b]">
+        <p className="text-sm text-stone-500">
           {questionCount}개의 질문 • 약 {estimatedTime}분 소요
         </p>
       </div>
     </div>
-  )
+  );
 }

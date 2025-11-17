@@ -19,30 +19,43 @@ export function OptionCard({
     <button
       onClick={onClick}
       className={cn(
-        'w-full flex items-center gap-4 p-[26px] rounded-2xl border-[1.689px] transition-all bg-white',
-        'hover:border-[#a4f4cf] hover:shadow-sm',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#009966] focus-visible:ring-offset-2',
+        // Base styles - Figma Design System
+        'w-full flex items-center gap-4 p-6 rounded-2xl border-2 transition-all duration-200 bg-white',
+        'font-inter cursor-pointer',
+        // Default state
+        'border-stone-200',
+        // Hover state
+        'hover:border-emerald-200 hover:shadow-sm',
+        // Focus state
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-2',
+        // Active state
         'active:scale-[0.98]',
-        isSelected
-          ? 'border-[#009966] shadow-md'
-          : 'border-[#e7e5e4]'
+        // Selected state
+        isSelected && 'border-emerald-600 shadow-md'
       )}
     >
       {/* Label Circle */}
       <div
         className={cn(
-          'flex items-center justify-center w-10 h-10 rounded-full text-base leading-6 font-normal flex-shrink-0 tracking-[-0.3125px]',
+          'flex items-center justify-center w-10 h-10 rounded-full',
+          'text-base leading-6 font-normal flex-shrink-0 tracking-tight',
+          'transition-colors duration-200',
           isSelected
-            ? 'bg-[#009966] text-white'
-            : 'bg-[#f5f4f3] text-[#79716b]'
+            ? 'bg-emerald-600 text-white'
+            : 'bg-stone-100 text-stone-500'
         )}
-        style={{ fontFamily: 'Inter, sans-serif' }}
       >
         {label}
       </div>
 
       {/* Option Text */}
-      <div className="text-left text-base leading-6 font-medium text-[#44403b] tracking-[-0.3125px]">
+      <div
+        className={cn(
+          'text-left text-base leading-6 font-normal tracking-tight',
+          'transition-colors duration-200',
+          isSelected ? 'text-stone-800' : 'text-stone-700'
+        )}
+      >
         {text}
       </div>
     </button>

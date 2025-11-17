@@ -51,10 +51,18 @@ export function calculateResult(
 
 /**
  * Validate that all questions have been answered
+ * @param totalQuestions - Total number of questions in the test
+ * @param answers - User answers with 1-based question numbers
  */
 export function validateAnswers(
-  questionIds: string[],
-  answers: Record<string, string>
+  totalQuestions: number,
+  answers: Record<number, number>
 ): boolean {
-  return questionIds.every((qId) => answers[qId] !== undefined)
+  // Check that all questions (1 to totalQuestions) have answers
+  for (let i = 1; i <= totalQuestions; i++) {
+    if (answers[i] === undefined) {
+      return false
+    }
+  }
+  return true
 }
