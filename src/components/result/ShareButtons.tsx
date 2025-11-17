@@ -17,29 +17,8 @@ export function ShareButtons({ title, description, url, testSlug }: ShareButtons
     // Prevent double-clicking
     if (isSharing) return
 
-    // Check if Web Share API is available (mobile)
-    if (navigator.share) {
-      setIsSharing(true)
-      try {
-        await navigator.share({
-          title,
-          text: description,
-          url,
-        })
-      } catch (error) {
-        const errorName = (error as Error).name
-        // Ignore AbortError (user cancelled) and InvalidStateError (share already in progress)
-        if (errorName !== 'AbortError' && errorName !== 'InvalidStateError') {
-          console.error('Share failed:', error)
-          handleCopyLink()
-        }
-      } finally {
-        setIsSharing(false)
-      }
-    } else {
-      // Fallback to copy link
-      handleCopyLink()
-    }
+    // Default to copy link first
+    await handleCopyLink()
   }
 
   const handleCopyLink = async () => {
