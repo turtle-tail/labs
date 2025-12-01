@@ -1,7 +1,7 @@
 import Script from 'next/script'
 
 export function MicrosoftClarity() {
-  const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID
+  const clarityId = process.env.NEXT_PUBLIC_CLARITY_PROJECT_ID
 
   if (!clarityId) {
     return null

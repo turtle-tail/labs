@@ -3,6 +3,7 @@ import { pretendard, inter } from './fonts';
 import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
+import { GoogleAds } from '@/components/analytics/GoogleAds';
 import { MicrosoftClarity } from '@/components/analytics/MicrosoftClarity';
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ export default function RootLayout({
         </div>
         <Toaster />
         <GoogleAnalytics />
+        <GoogleAds />
         <MicrosoftClarity />
       </body>
     </html>
