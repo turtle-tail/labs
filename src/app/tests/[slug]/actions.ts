@@ -2,7 +2,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { calculateResult, validateAnswers } from '@/lib/utils/calculate-result';
-import { Database } from '@/lib/supabase/types';
+import { Database, Json } from '@/lib/supabase/types';
 import { TestAnswers } from '@/lib/types/database';
 
 type Question = { id: string; order_index: number };
@@ -83,7 +83,7 @@ export async function submitTest(testId: string, answers: TestAnswers): Promise<
     .insert({
       test_id: testId,
       result_id: winningResultId,
-      answers: answers as unknown as Database['public']['Tables']['test_results']['Row']['answers'],
+      answers: answers as unknown as Json,
     })
     .select('id')
     .single<TestResult>();

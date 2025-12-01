@@ -20,6 +20,39 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Supabase TypeScript Types
+
+This project uses Supabase for the database. TypeScript types are manually maintained in `src/lib/supabase/types.ts`.
+
+### Generating Types (Future)
+
+To auto-generate types from your Supabase database schema in the future:
+
+1. Login to Supabase CLI:
+```bash
+npx supabase login
+```
+
+2. Generate types:
+```bash
+npm run types:generate
+```
+
+Or use the full command with your access token:
+```bash
+SUPABASE_ACCESS_TOKEN=your_token npm run types:generate
+```
+
+**Note:** Currently, types are manually maintained. The `types:generate` command requires Supabase CLI authentication.
+
+### Type Structure
+
+The Database interface follows Supabase's standard structure:
+- `Row`: Database table row type
+- `Insert`: Type for inserting new rows (auto-generated fields are optional)
+- `Update`: Type for updating rows (all fields optional)
+- `Relationships`: Foreign key relationships
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
