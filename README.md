@@ -2,6 +2,23 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Environment Variables
+
+Make sure to set up your environment variables:
+
+```bash
+cp .env.example .env.local
+```
+
+Then edit `.env.local` with your Supabase credentials.
+
+**Important for Vercel deployment:**
+- Set `NEXT_PUBLIC_SITE_URL` to your production domain (e.g., `https://labs.turtle-tail.com`)
+- This is required for share functionality to work correctly
+- See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed Vercel setup instructions
+
+### Development Server
+
 First, run the development server:
 
 ```bash
