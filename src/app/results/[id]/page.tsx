@@ -50,77 +50,69 @@ export default async function ResultPage({ params }: PageProps) {
   const test = data.test;
 
   return (
-    <main className="min-h-screen bg-stone-50 flex items-center justify-center px-6 py-12">
-      <div className="max-w-[512px] w-full flex flex-col gap-8">
+    <main className="min-h-screen bg-stone-50 flex flex-col items-center px-0 py-0">
+      <div className="w-[375px] flex flex-col gap-8">
         {/* Hero Image */}
-        <div className="w-full h-64 bg-white border border-stone-200 rounded-3xl overflow-hidden relative">
+        <div className="w-full h-[350px] overflow-hidden relative">
           {result.image_url && (
             <Image
               src={result.image_url}
               alt={result.title}
               fill
               className="object-cover"
-              sizes="(max-width: 768px) 100vw, 512px"
+              sizes="(max-width: 768px) 100vw, 375px"
             />
           )}
         </div>
 
-        {/* Keywords */}
-        {result.keywords && Array.isArray(result.keywords) && result.keywords.length > 0 && (
-          <div className="flex justify-center gap-3">
-            {result.keywords.slice(0, 3).map((keyword: string, index: number) => (
-              <div
-                key={index}
-                className="h-12 px-5 bg-white border border-emerald-200 rounded-full flex items-center justify-center"
-              >
-                <span className="text-base leading-6 text-emerald-700 tracking-tight">#{keyword}</span>
+        {/* Content Container */}
+        <div className="w-full flex flex-col gap-[58px] px-6 pb-10">
+          {/* Title, Keywords, Description */}
+          <div className="w-full flex flex-col gap-[18px] items-center">
+            {/* Main Title */}
+            <h1 className="text-[28px] leading-[39px] font-semibold text-center text-stone-800 tracking-[0.0703px] w-full whitespace-pre-wrap">
+              2025년, 나의 키워드는
+            </h1>
+
+            {/* Result Title */}
+            <p className="text-xl leading-normal font-semibold text-center text-stone-800 w-full whitespace-pre-wrap">
+              &quot;{result.title}&quot;
+            </p>
+
+            {/* Keywords */}
+            {result.keywords && Array.isArray(result.keywords) && result.keywords.length > 0 && (
+              <div className="flex gap-1.5 justify-center w-full">
+                {result.keywords.slice(0, 3).map((keyword: string, index: number) => (
+                  <div
+                    key={index}
+                    className="h-10 px-[18px] bg-white border border-emerald-200 rounded-full flex items-center justify-center"
+                  >
+                    <span className="text-base leading-6 font-semibold text-[#007a55] tracking-[-0.3125px]">
+                      #{keyword}
+                    </span>
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
+
+            {/* Description Card */}
+            <div className="bg-white border border-stone-200 rounded-2xl px-6 py-8 w-full">
+              <p className="text-base leading-[1.65] text-stone-700 text-center tracking-[-0.3125px] whitespace-pre-wrap">
+                {result.this_year_description || result.description}
+              </p>
+            </div>
           </div>
-        )}
 
-        {/* Result Title */}
-        <h1 className="text-2xl leading-10 text-center text-stone-800 tracking-normal">{result.title}</h1>
-
-        {/* This Year's Description */}
-        {result.this_year_description && (
-          <div className="bg-white border border-stone-200 rounded-3xl p-8">
-            <h2 className="text-lg font-semibold text-stone-800 mb-4 text-center">올해의 나</h2>
-            <p className="text-base leading-7 text-stone-700 text-center tracking-tight whitespace-pre-wrap">
-              {result.this_year_description}
-            </p>
+          {/* Action Buttons */}
+          <div className="w-full flex flex-col gap-3">
+            <ShareButtons
+              title={result.title}
+              description={result.share_description}
+              url={`${process.env.NEXT_PUBLIC_SITE_URL || ''}/results/${id}`}
+              testSlug={test.slug}
+            />
           </div>
-        )}
-
-        {/* Next Year's Advice */}
-        {result.next_year_advice && (
-          <div className="bg-white border border-stone-200 rounded-3xl p-8">
-            <h2 className="text-lg font-semibold text-stone-800 mb-4 text-center">내년 조언</h2>
-            <p className="text-base leading-7 text-stone-700 text-center tracking-tight whitespace-pre-wrap">
-              {result.next_year_advice}
-            </p>
-          </div>
-        )}
-
-        {/* Legacy Description (for backward compatibility) */}
-        {result.description && !result.this_year_description && !result.next_year_advice && (
-          <div className="bg-white border border-stone-200 rounded-3xl p-8">
-            <p className="text-base leading-7 text-stone-700 text-center tracking-tight whitespace-pre-wrap">
-              {result.description}
-            </p>
-          </div>
-        )}
-
-        {/* Action Buttons */}
-        <ShareButtons
-          title={result.title}
-          description={result.share_description}
-          url={`${process.env.NEXT_PUBLIC_SITE_URL || ''}/results/${id}`}
-          testSlug={test.slug}
-        />
-
-        {/* Footer Text */}
-        <p className="text-xs leading-4 text-[#79716b] text-center">2025 나의 키워드 찾기 ✨</p>
+        </div>
       </div>
     </main>
   );

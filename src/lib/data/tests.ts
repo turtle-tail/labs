@@ -3,10 +3,10 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { Database } from '@/lib/supabase/types';
 import { cache } from 'react';
 
-type Test = Database['labs']['Tables']['tests']['Row'];
-type Question = Database['labs']['Tables']['questions']['Row'];
-type QuestionOption = Database['labs']['Tables']['question_options']['Row'];
-type Result = Database['labs']['Tables']['results']['Row'];
+type Test = Database['public']['Tables']['tests']['Row'];
+type Question = Database['public']['Tables']['questions']['Row'];
+type QuestionOption = Database['public']['Tables']['question_options']['Row'];
+type Result = Database['public']['Tables']['results']['Row'];
 
 export interface TestWithQuestions extends Test {
   questions: (Question & {
@@ -23,7 +23,7 @@ export async function getPublishedTestsForBuild(): Promise<Test[]> {
   const supabase = createAdminClient();
 
   const { data, error } = await supabase
-    .schema('labs')
+    
     .from('tests')
     .select('*')
     .eq('is_published', true)
@@ -45,7 +45,7 @@ export const getPublishedTests = cache(async (): Promise<Test[]> => {
   const supabase = await createClient();
 
   const { data, error } = await supabase
-    .schema('labs')
+    
     .from('tests')
     .select('*')
     .eq('is_published', true)
@@ -74,7 +74,7 @@ export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestio
 
   // Get test
   const { data: test, error: testError } = await supabase
-    .schema('labs')
+    
     .from('tests')
     .select('*')
     .eq('slug', slug)
@@ -87,7 +87,7 @@ export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestio
 
   // Get questions with options
   const { data: questions, error: questionsError } = await supabase
-    .schema('labs')
+    
     .from('questions')
     .select(
       `
@@ -112,7 +112,7 @@ export const getTestBySlug = cache(async (slug: string): Promise<TestWithQuestio
 
   // Get results
   const { data: results, error: resultsError } = await supabase
-    .schema('labs')
+    
     .from('results')
     .select('*')
     .eq('test_id', test.id);
@@ -147,7 +147,7 @@ function isTestResultWithRelations(data: unknown): data is TestResultWithRelatio
     return false;
   }
 
-  const result = data as any;
+  const result = data as Record<string, unknown>;
 
   return (
     typeof result.id === 'string' &&
@@ -169,7 +169,7 @@ export const getTestResult = cache(async (resultId: string): Promise<TestResultW
   const supabase = await createClient();
 
   const { data, error } = await supabase
-    .schema('labs')
+    
     .from('test_results')
     .select(
       `

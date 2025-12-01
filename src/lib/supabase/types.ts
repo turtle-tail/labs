@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export interface Database {
-  labs: {
+  public: {
     Tables: {
       categories: {
         Row: {
@@ -20,8 +20,8 @@ export interface Database {
           created_at: string
           updated_at: string
         }
-        Insert: Omit<Database['labs']['Tables']['categories']['Row'], 'id' | 'created_at' | 'updated_at'>
-        Update: Partial<Database['labs']['Tables']['categories']['Insert']>
+        Insert: Omit<Database['public']['Tables']['categories']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['categories']['Insert']>
       }
       tests: {
         Row: {
@@ -38,8 +38,8 @@ export interface Database {
           created_at: string
           updated_at: string
         }
-        Insert: Omit<Database['labs']['Tables']['tests']['Row'], 'id' | 'created_at' | 'updated_at'>
-        Update: Partial<Database['labs']['Tables']['tests']['Insert']>
+        Insert: Omit<Database['public']['Tables']['tests']['Row'], 'id' | 'created_at' | 'updated_at'>
+        Update: Partial<Database['public']['Tables']['tests']['Insert']>
       }
       questions: {
         Row: {
@@ -50,8 +50,8 @@ export interface Database {
           order_index: number
           created_at: string
         }
-        Insert: Omit<Database['labs']['Tables']['questions']['Row'], 'id' | 'created_at'>
-        Update: Partial<Database['labs']['Tables']['questions']['Insert']>
+        Insert: Omit<Database['public']['Tables']['questions']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['questions']['Insert']>
       }
       question_options: {
         Row: {
@@ -63,8 +63,8 @@ export interface Database {
           order_index: number
           created_at: string
         }
-        Insert: Omit<Database['labs']['Tables']['question_options']['Row'], 'id' | 'created_at'>
-        Update: Partial<Database['labs']['Tables']['question_options']['Insert']>
+        Insert: Omit<Database['public']['Tables']['question_options']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['question_options']['Insert']>
       }
       results: {
         Row: {
@@ -77,10 +77,11 @@ export interface Database {
           share_description: string
           this_year_description: string | null
           next_year_advice: string | null
+          score_key: string | null
           created_at: string
         }
-        Insert: Omit<Database['labs']['Tables']['results']['Row'], 'id' | 'created_at'>
-        Update: Partial<Database['labs']['Tables']['results']['Insert']>
+        Insert: Omit<Database['public']['Tables']['results']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['results']['Insert']>
       }
       test_results: {
         Row: {
@@ -91,8 +92,8 @@ export interface Database {
           answers: Json
           created_at: string
         }
-        Insert: Omit<Database['labs']['Tables']['test_results']['Row'], 'id' | 'created_at'>
-        Update: Partial<Database['labs']['Tables']['test_results']['Insert']>
+        Insert: Omit<Database['public']['Tables']['test_results']['Row'], 'id' | 'created_at'>
+        Update: Partial<Database['public']['Tables']['test_results']['Insert']>
       }
     }
   }

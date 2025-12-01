@@ -17,8 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${pretendard.variable} ${inter.variable}`}>
-      <body>
-        {children}
+      <body className="bg-stone-200">
+        {/* Desktop wrapper: gray background with white centered container */}
+        <div className="min-h-screen md:bg-stone-200 md:flex md:items-center md:justify-center">
+          <div className="w-full md:max-w-[375px] md:min-h-screen md:bg-white md:shadow-lg">{children}</div>
+        </div>
         <Toaster />
         <GoogleAnalytics />
         <MicrosoftClarity />

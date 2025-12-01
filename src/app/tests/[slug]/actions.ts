@@ -6,8 +6,8 @@ import { Database } from '@/lib/supabase/types';
 import { TestAnswers } from '@/lib/types/database';
 
 type Question = { id: string; order_index: number };
-type QuestionOption = Database['labs']['Tables']['question_options']['Row'];
-type Result = Database['labs']['Tables']['results']['Row'];
+type QuestionOption = Database['public']['Tables']['question_options']['Row'];
+type Result = Database['public']['Tables']['results']['Row'];
 type TestResult = { id: string };
 
 /**
@@ -22,14 +22,16 @@ export async function submitTest(testId: string, answers: TestAnswers): Promise<
   const supabase = await createClient();
   // 1. Get all questions with their IDs
   const { data: questions, error: questionsError } = await supabase
-    .schema('labs')
     .from('questions')
     .select('id, order_index')
     .eq('test_id', testId)
     .order('order_index')
     .returns<Question[]>();
   if (questionsError || !questions) {
-    throw new Error('Failed to load questions');
+    console.error('Questions Error:', questionsError);
+    console.error('Test ID:', testId);
+    console.error('Questions data:', questions);
+    throw new Error(`Failed to load questions: ${questionsError?.message || 'Unknown error'}`);
   }
   // 2. Validate all questions are answered (1-based indices)
   const totalQuestions = questions.length;
@@ -39,7 +41,6 @@ export async function submitTest(testId: string, answers: TestAnswers): Promise<
   // 3. Get all options for these questions in a single query
   const questionIds = questions.map((q) => q.id);
   const { data: allOptions, error: optionsError } = await supabase
-    .schema('labs')
     .from('question_options')
     .select('*')
     .in('question_id', questionIds)
@@ -66,7 +67,6 @@ export async function submitTest(testId: string, answers: TestAnswers): Promise<
   }
   // 5. Get all possible results
   const { data: results, error: resultsError } = await supabase
-    .schema('labs')
     .from('results')
     .select('*')
     .eq('test_id', testId)
@@ -79,7 +79,6 @@ export async function submitTest(testId: string, answers: TestAnswers): Promise<
 
   // 7. Save to test_results table
   const { data: testResult, error } = await supabase
-    .schema('labs')
     .from('test_results')
     .insert({
       test_id: testId,

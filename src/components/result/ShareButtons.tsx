@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react'
 import { toast } from 'sonner'
 
 interface ShareButtonsProps {
@@ -10,14 +9,9 @@ interface ShareButtonsProps {
   testSlug: string
 }
 
-export function ShareButtons({ title, description, url, testSlug }: ShareButtonsProps) {
-  const [isSharing, setIsSharing] = useState(false)
-
+export function ShareButtons({ url, testSlug }: ShareButtonsProps) {
   const handleShare = async () => {
-    // Prevent double-clicking
-    if (isSharing) return
-
-    // Default to copy link first
+    // Default to copy link
     await handleCopyLink()
   }
 
@@ -34,11 +28,11 @@ export function ShareButtons({ title, description, url, testSlug }: ShareButtons
   }
 
   return (
-    <div className="flex gap-3 w-full">
+    <div className="flex flex-col gap-3 w-full">
+      {/* Share Link Button */}
       <button
         onClick={handleShare}
-        disabled={isSharing}
-        className="flex-1 h-8 bg-white border-2 border-stone-300 rounded-full flex items-center justify-center gap-2 transition-opacity hover:opacity-80 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        className="h-12 bg-white border border-stone-300 rounded-3xl flex items-center justify-center gap-4 transition-opacity hover:opacity-80 cursor-pointer"
       >
         <svg
           className="w-4 h-4"
@@ -51,14 +45,13 @@ export function ShareButtons({ title, description, url, testSlug }: ShareButtons
         >
           <path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
         </svg>
-        <span className="text-sm leading-5 font-medium text-stone-700 tracking-tight">
-          링크 공유
-        </span>
+        <span className="text-sm leading-5 font-medium text-stone-700 tracking-[-0.1504px]">링크 공유</span>
       </button>
 
+      {/* Retry Button */}
       <a
         href={`/tests/${testSlug}`}
-        className="flex-1 h-8 bg-emerald-600 rounded-full flex items-center justify-center gap-2 shadow-sm transition-opacity hover:opacity-90 cursor-pointer"
+        className="h-12 bg-emerald-600 rounded-3xl flex items-center justify-center gap-4 shadow-[0px_1px_3px_0px_rgba(0,0,0,0.1),0px_1px_2px_-1px_rgba(0,0,0,0.1)] transition-opacity hover:opacity-90 cursor-pointer"
       >
         <svg
           className="w-4 h-4 text-white"
@@ -71,10 +64,8 @@ export function ShareButtons({ title, description, url, testSlug }: ShareButtons
         >
           <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
         </svg>
-        <span className="text-sm leading-5 font-medium text-white tracking-tight">
-          다시 해보기
-        </span>
+        <span className="text-sm leading-5 font-medium text-white tracking-[-0.1504px]">다시 해보기</span>
       </a>
     </div>
-  )
+  );
 }

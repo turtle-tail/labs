@@ -1,8 +1,8 @@
 import { Database } from '@/lib/supabase/types';
 import { parsePoints, PointsMap } from '@/lib/types/database';
 
-type QuestionOption = Database['labs']['Tables']['question_options']['Row'];
-type Result = Database['labs']['Tables']['results']['Row'];
+type QuestionOption = Database['public']['Tables']['question_options']['Row'];
+type Result = Database['public']['Tables']['results']['Row'];
 
 interface ScoreMap {
   [resultId: string]: number;
@@ -25,11 +25,18 @@ export function calculateResult(options: QuestionOption[], results: Result[]): s
     throw new Error('No options provided for calculation');
   }
 
-  // Initialize score map
+  // Initialize score map using score_key
   const scores: ScoreMap = {};
+  const scoreKeyToId: Record<string, string> = {};
+
   results.forEach((result) => {
-    scores[result.id] = 0;
+    if (result.score_key) {
+      scores[result.score_key] = 0;
+      scoreKeyToId[result.score_key] = result.id;
+    }
   });
+
+  console.log('Score keys:', Object.keys(scores));
 
   // Accumulate points from each selected option
   options.forEach((option, index) => {
@@ -41,25 +48,32 @@ export function calculateResult(options: QuestionOption[], results: Result[]): s
       throw new Error(`Invalid points data for option at index ${index}: ${(error as Error).message}`);
     }
 
-    Object.entries(points).forEach(([resultId, pointValue]) => {
-      if (scores[resultId] !== undefined) {
-        scores[resultId] += pointValue;
+    console.log(`Option ${index + 1} points:`, points);
+
+    Object.entries(points).forEach(([scoreKey, pointValue]) => {
+      if (scores[scoreKey] !== undefined) {
+        scores[scoreKey] += pointValue;
       }
     });
   });
 
-  // Find result with highest score
-  let winningResultId = results[0].id;
-  let highestScore = scores[winningResultId];
+  console.log('Final scores:', scores);
 
-  Object.entries(scores).forEach(([resultId, score]) => {
+  // Find score_key with highest score
+  let winningScoreKey = Object.keys(scores)[0];
+  let highestScore = scores[winningScoreKey];
+
+  Object.entries(scores).forEach(([scoreKey, score]) => {
     if (score > highestScore) {
       highestScore = score;
-      winningResultId = resultId;
+      winningScoreKey = scoreKey;
     }
   });
 
-  return winningResultId;
+  console.log('Winning score key:', winningScoreKey, 'with score:', highestScore);
+
+  // Return the actual result ID
+  return scoreKeyToId[winningScoreKey];
 }
 
 /**

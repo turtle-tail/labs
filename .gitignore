@@ -42,3 +42,12 @@ next-env.d.ts
 
 # playwright
 .playwright-mcp
+
+# MCP configuration (contains project-specific refs)
+/.mcp.json
+
+# Development scripts (may contain sensitive queries)
+/scripts/
+
+# Local Supabase files
+/.supabase/

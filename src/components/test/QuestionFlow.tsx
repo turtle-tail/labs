@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
+import Lottie from 'lottie-react';
 import { OptionCard } from './OptionCard';
 import { TestWithQuestions } from '@/lib/data/tests';
 import { submitTest } from '@/app/tests/[slug]/actions';
+import loadingAnimation from '../../../public/loading.json';
 
 interface QuestionFlowProps {
   test: TestWithQuestions;
@@ -61,26 +63,28 @@ export function QuestionFlow({ test }: QuestionFlowProps) {
 
   if (isSubmitting) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-5">
-        <div className="max-w-content w-full text-center">
-          <div className="mb-6 text-6xl">✨</div>
-          <p className="text-text-secondary">결과를 계산하고 있어요...</p>
+      <div className="min-h-screen bg-stone-50 flex items-center justify-center px-6">
+        <div className="max-w-[375px] w-full flex flex-col items-center gap-6">
+          <div className="w-48 h-48">
+            <Lottie animationData={loadingAnimation} loop={true} />
+          </div>
+          <p className="text-base text-stone-600 text-center">결과를 계산하고 있어요...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-stone-50 flex items-center justify-center px-6 py-12">
-      <div className="max-w-[512px] w-full flex flex-col gap-12">
+    <div className="h-screen bg-stone-50 flex items-center justify-center">
+      <div className="w-[375px] h-full flex flex-col gap-12 justify-start py-[48px] px-[22.311px]">
         {/* Progress Indicator */}
         <div className="flex flex-col gap-2 items-center w-full">
-          <p className="text-sm leading-5 text-stone-500 text-center tracking-tight">
-            Step {currentIndex + 1} of {totalQuestions}
+          <p className="text-sm leading-5 text-[#79716b] text-center tracking-[-0.1504px]">
+            {currentIndex + 1} / {totalQuestions}
           </p>
-          <div className="w-full h-1.5 bg-stone-200 rounded-full overflow-hidden">
+          <div className="w-full h-[6px] bg-stone-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-emerald-600 rounded-full transition-all duration-[400ms] ease-out"
+              className="h-full bg-emerald-600 rounded-full transition-all duration-400 ease-out"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -89,7 +93,7 @@ export function QuestionFlow({ test }: QuestionFlowProps) {
         {/* Question & Options */}
         <div key={currentIndex} className="flex flex-col gap-12 items-center w-full animate-fade-slide-in">
           {/* Question */}
-          <h2 className="text-2xl leading-10 font-semibold text-center text-stone-900 tracking-tight whitespace-pre-wrap">
+          <h2 className="text-2xl leading-[39px] font-semibold text-center text-stone-800 tracking-[-0.24px] whitespace-pre-wrap max-w-[335px]">
             {currentQuestion.text}
           </h2>
 
