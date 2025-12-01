@@ -83,7 +83,7 @@ export async function submitTest(testId: string, answers: TestAnswers): Promise<
     .insert({
       test_id: testId,
       result_id: winningResultId,
-      answers: answers,
+      answers: answers as unknown as Database['public']['Tables']['test_results']['Row']['answers'],
     })
     .select('id')
     .single<TestResult>();
