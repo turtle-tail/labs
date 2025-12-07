@@ -65,7 +65,7 @@ export function InterstitialAd({ onClose }: InterstitialAdProps) {
           className="adsbygoogle"
           style={{ display: 'block', minHeight: '250px' }}
           data-ad-client="ca-pub-5375099993721387"
-          data-ad-slot="YOUR_INTERSTITIAL_AD_SLOT_ID"
+          data-ad-slot="9587638999"
           data-ad-format="auto"
           data-full-width-responsive="true"
         />

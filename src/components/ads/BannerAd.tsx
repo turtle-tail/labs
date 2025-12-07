@@ -34,7 +34,7 @@ export function BannerAd() {
           className="adsbygoogle"
           style={{ display: 'block' }}
           data-ad-client="ca-pub-5375099993721387"
-          data-ad-slot="YOUR_AD_SLOT_ID"
+          data-ad-slot="7789866813"
           data-ad-format="auto"
           data-full-width-responsive="true"
         />
