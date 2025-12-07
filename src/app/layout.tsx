@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
 import { GoogleAds } from '@/components/analytics/GoogleAds';
 import { MicrosoftClarity } from '@/components/analytics/MicrosoftClarity';
+import { AdSenseScript } from '@/components/ads/AdSenseScript';
 
 export const metadata: Metadata = {
   title: 'Labs - 심리테스트',
@@ -27,6 +28,7 @@ export default function RootLayout({
         <GoogleAnalytics />
         <GoogleAds />
         <MicrosoftClarity />
+        <AdSenseScript />
       </body>
     </html>
   );
