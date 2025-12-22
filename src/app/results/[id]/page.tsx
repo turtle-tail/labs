@@ -81,7 +81,7 @@ export default async function ResultPage({ params }: PageProps) {
 
             {/* Keywords */}
             {result.keywords && Array.isArray(result.keywords) && result.keywords.length > 0 && (
-              <div className="flex gap-1.5 justify-center w-full">
+              <div className="flex flex-wrap gap-1.5 justify-center w-full">
                 {result.keywords.slice(0, 3).map((keyword: string, index: number) => (
                   <div
                     key={index}
